@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Decision Capsule — архив решений</title>
+  <link rel="stylesheet" href="styles.css?v=2">
+</head>
+<body>
+  <div id="app" class="app-shell"></div>
+  <div id="live-region" class="sr-only" aria-live="polite"></div>
+  <script>
+    const showBootError = () => {
+      const root = document.querySelector('#app');
+      if (!root || root.textContent.trim()) return;
+      const main = document.createElement('main');
+      main.className = 'main';
+      const notice = document.createElement('div');
+      notice.className = 'notice notice-error';
+      const title = document.createElement('strong');
+      title.textContent = 'не удалось открыть архив.';
+      const detail = document.createElement('p');
+      detail.textContent = 'обновите страницу. если ошибка повторится, проверьте доступ к локальному хранилищу.';
+      notice.append(title, detail);
+      main.append(notice);
+      root.replaceChildren(main);
+    };
+    window.addEventListener('error', showBootError);
+    window.addEventListener('unhandledrejection', showBootError);
+  </script>
+  <script type="module" src="app.js?v=2"></script>
+</body>
+</html>
