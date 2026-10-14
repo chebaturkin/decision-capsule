@@ -364,7 +364,7 @@ root.addEventListener('submit', async (event) => {
   }
   try {
     if (event.target.id === 'capsule-form') { setDraftFromForm(); const error = validateStep(); const box = document.querySelector('#form-error'); if (box) box.textContent = error; if (error) { announce(error); root.querySelector('[data-draft], [data-option-index]')?.focus(); return; } state.wizardStep += 1; await flushDraftSave(); render(); return; }
-    if (event.target.id === 'result-form') { const capsule = currentCapsule(); const value = submittedResult.trim(); const saved = saveResult(capsule, value, new Date()); await state.repo.updateProgress(capsule.id, { result: saved.result, resultUpdatedAt: saved.resultUpdatedAt }); await refresh(); state.resultDrafts.delete(capsule.id); notify('итог сохранён.'); }
+    if (event.target.id === 'result-form') { const capsule = currentCapsule(); const value = submittedResult.trim(); const saved = saveResult(capsule, value, new Date()); await state.repo.updateProgress(capsule.id, { result: saved.result, resultUpdatedAt: saved.resultUpdatedAt }); await refresh(); if (state.resultDrafts.get(capsule.id) === submittedResult) state.resultDrafts.delete(capsule.id); notify('итог сохранён.'); }
   } catch (error) { notifyError(error); }
   finally { if (state.busyAction === 'result') { state.busyAction = null; render(); } }
 });

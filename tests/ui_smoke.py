@@ -229,7 +229,37 @@ with sync_playwright() as p:
     page.locator('[data-action="filter"][data-filter="all"]').click()
     page.locator('[data-action="detail"][data-id="example-opened"]').click()
     expect(page.locator('h1')).to_be_in_viewport()
-    assert not errors, errors
-    print('PASS: complete creation, draft resume, validation, opening, result persistence, filters, search, sorting, export, file/link import, modal focus, widths 320/390/768/1440; no JavaScript errors')
     context.close()
+    # Delay the real repository write to check edits made while saving.
+    slow_context = browser.new_context(timezone_id='Europe/Moscow')
+    def delay_result_write(route):
+        response = route.fetch()
+        source = response.text()
+        marker = 'const updateProgress = async (id, progress = {}) => {'
+        assert marker in source
+        source = source.replace(marker, marker + "\nif (Object.hasOwn(progress, 'result')) await new Promise(resolve => setTimeout(resolve, 600));")
+        route.fulfill(response=response, body=source)
+    slow_context.route('**/lib/repository.js?v=3', delay_result_write)
+    slow_page = slow_context.new_page()
+    slow_page.on('pageerror', lambda e: errors.append(str(e)))
+    slow_page.goto(base)
+    slow_page.wait_for_load_state('networkidle')
+    slow_page.evaluate(seed)
+    slow_page.reload()
+    slow_page.locator('[data-action="detail"][data-id="example-opened"]').click()
+    slow_page.locator('#result').fill('первая версия итога')
+    slow_page.locator('#result-form [type="submit"]').click()
+    expect(slow_page.locator('#result-form [type="submit"]')).to_be_disabled()
+    slow_page.locator('#result').fill('дополнение, набранное во время сохранения')
+    expect(slow_page.locator('.toast')).to_contain_text('итог сохранён.')
+    expect(slow_page.locator('#result')).to_have_value('дополнение, набранное во время сохранения')
+    expect(slow_page.locator('#result-status')).to_have_text('изменения не сохранены')
+    stored_result = slow_page.evaluate('''async () => {
+      const {openRepository} = await import('./lib/repository.js?v=3');
+      return (await (await openRepository()).list()).find(capsule => capsule.id === 'example-opened').result;
+    }''')
+    assert stored_result == 'первая версия итога'
+    slow_context.close()
+    assert not errors, errors
+    print('PASS: creation, draft resume, validation, opening, result persistence and editing buffers, search focus, filters, sorting, export, file/link import, modal focus, navigation, widths 320/390/768/1440; no JavaScript errors')
     browser.close()
