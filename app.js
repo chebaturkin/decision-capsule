@@ -60,8 +60,8 @@ function esc(value = '') { return String(value).replace(/[&<>'"]/g, (c) => ({ '&
 function text(value = '') { return esc(value).replace(/\n/g, '<br>'); }
 function announce(message) { if (live) live.textContent = message; }
 function today() { state.today = localDate(new Date()); return state.today; }
-function formatDate(value) { if (!value) return '—'; return new Intl.DateTimeFormat('ru-RU', { dateStyle: 'medium' }).format(new Date(`${value}T12:00:00`)); }
-function formatDateTime(value) { if (!value) return '—'; return new Intl.DateTimeFormat('ru-RU', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value)); }
+function formatDate(value) { if (!value) return 'не указана'; return new Intl.DateTimeFormat('ru-RU', { dateStyle: 'medium' }).format(new Date(`${value}T12:00:00`)); }
+function formatDateTime(value) { if (!value) return 'не указана'; return new Intl.DateTimeFormat('ru-RU', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value)); }
 function numberFor(c) { return String(c.number ?? 0).padStart(3, '0'); }
 function statusLabel(status) { return ({ sealed: 'запечатана', ready: 'готова к открытию', opened: 'открыта' })[status] ?? status; }
 function statusClass(status) { return status === 'sealed' ? 'sealed' : status === 'opened' ? 'opened' : 'ready'; }
@@ -123,7 +123,7 @@ async function init() {
 function shell(content) {
   return `<a class="skip-link" href="#main-content">к содержимому</a>
   <header class="app-header"><div class="app-header-inner">
-    <button class="brand" data-action="archive" aria-label="decision capsule — открыть архив"><img class="brand-mark" src="assets/mark.svg" alt="" width="48" height="48"><span class="brand-title">decision capsule</span></button>
+    <button class="brand" data-action="archive" aria-label="decision capsule, открыть архив"><img class="brand-mark" src="assets/mark.svg" alt="" width="48" height="48"><span class="brand-title">decision capsule</span></button>
     ${state.view !== 'new' ? '<button class="btn primary" data-action="new"><span aria-hidden="true">＋</span> новая капсула</button>' : '<button class="btn ghost" data-action="archive">вернуться в архив</button>'}
   </div></header>
   <main class="main" id="main-content">${content}</main>
