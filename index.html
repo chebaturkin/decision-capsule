@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>decision capsule · архив решений</title>
-  <meta name="description" content="сохраните решение вместе с контекстом и вернитесь к нему в назначенный день. данные остаются в вашем браузере.">
+  <title data-i18n="m143">decision capsule · decision archive</title>
+  <meta name="description" content="save a decision with its context and revisit it on a chosen day. data stays in your browser." data-i18n-content="m144">
   <meta name="theme-color" content="#f6f7f2">
   <link rel="icon" type="image/svg+xml" href="assets/mark.svg">
   <link rel="stylesheet" href="styles.css?v=3">
@@ -12,7 +12,9 @@
 <body>
   <div id="app" class="app-shell"></div>
   <div id="live-region" class="sr-only" aria-live="polite"></div>
+  <script src="lib/i18n.js"></script>
   <script>
+    const t = (key, values) => I18n.t(key, values);
     const showBootError = () => {
       const root = document.querySelector('#app');
       if (!root || root.textContent.trim()) return;
@@ -21,9 +23,9 @@
       const notice = document.createElement('div');
       notice.className = 'notice notice-error';
       const title = document.createElement('strong');
-      title.textContent = 'не удалось открыть архив.';
+      title.textContent = t("m142");
       const detail = document.createElement('p');
-      detail.textContent = 'обновите страницу. если ошибка повторится, проверьте доступ к локальному хранилищу.';
+      detail.textContent = t("m141");
       notice.append(title, detail);
       main.append(notice);
       root.replaceChildren(main);

@@ -230,3 +230,12 @@ test('progress transitions remain monotonic and timestamps stay canonical', () =
   assert.equal(validateCapsule(withResult), true);
   assert.equal(validateCapsule({ ...sealed, openedAt: NOW.toISOString(), result: 'Итог', resultUpdatedAt: '2026-10-08T12:00:00.000Z' }), false);
 });
+
+test('english markdown localizes headings while keeping authored text verbatim', () => {
+  const capsule = createCapsule({ question: 'мой вопрос', context: 'мой контекст', options: ['первый', 'второй'], chosenPath: 'мой выбор', confidence: 65, reviewDate: '2099-01-01' });
+  const english = exportMarkdown([capsule], 'en');
+  assert.match(english, /# decision archive/);
+  assert.match(english, /### context/);
+  assert.match(english, /мой контекст/);
+  assert.match(english, /- status: sealed/);
+});

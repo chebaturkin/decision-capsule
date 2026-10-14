@@ -53,7 +53,7 @@ def shot(page, name):
 
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
-    context = browser.new_context(viewport={"width":1440,"height":1050}, timezone_id='Europe/Moscow', accept_downloads=True)
+    context = browser.new_context(locale='ru-RU', viewport={"width":1440,"height":1050}, timezone_id='Europe/Moscow', accept_downloads=True)
     page = context.new_page()
     page.on('pageerror', lambda e: errors.append(str(e)))
     page.goto(base)
@@ -142,7 +142,7 @@ with sync_playwright() as p:
     expect(page.locator('[data-action="confirm-import"]')).to_be_disabled()
     page.keyboard.press('Escape')
     # Import by link and by file in an empty isolated browser.
-    transfer_context = browser.new_context(timezone_id='Europe/Moscow')
+    transfer_context = browser.new_context(locale='ru-RU', timezone_id='Europe/Moscow')
     transfer = transfer_context.new_page()
     transfer.on('pageerror', lambda e: errors.append(str(e)))
     transfer.goto(share_url)
@@ -150,7 +150,7 @@ with sync_playwright() as p:
     transfer.locator('[data-action="import-hash"]').click()
     expect(transfer.locator('.capsule-card')).to_have_count(1)
     transfer_context.close()
-    file_context = browser.new_context(timezone_id='Europe/Moscow')
+    file_context = browser.new_context(locale='ru-RU', timezone_id='Europe/Moscow')
     transfer = file_context.new_page()
     transfer.on('pageerror', lambda e: errors.append(str(e)))
     transfer.goto(base)
@@ -162,7 +162,7 @@ with sync_playwright() as p:
     file_context.close()
     context.close()
     # Screenshots use only illustrative records in a fresh context.
-    context = browser.new_context(viewport={"width":1440,"height":1050}, timezone_id='Europe/Moscow')
+    context = browser.new_context(locale='ru-RU', viewport={"width":1440,"height":1050}, timezone_id='Europe/Moscow')
     page = context.new_page()
     page.on('pageerror', lambda e: errors.append(str(e)))
     page.goto(base)
@@ -231,7 +231,7 @@ with sync_playwright() as p:
     expect(page.locator('h1')).to_be_in_viewport()
     context.close()
     # Delay the real repository write to check edits made while saving.
-    slow_context = browser.new_context(timezone_id='Europe/Moscow')
+    slow_context = browser.new_context(locale='ru-RU', timezone_id='Europe/Moscow')
     def delay_result_write(route):
         response = route.fetch()
         source = response.text()

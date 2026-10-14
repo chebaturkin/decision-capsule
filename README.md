@@ -1,83 +1,88 @@
+**english** · [русский](README.ru.md)
+
 # decision capsule
 
-сохраните решение вместе с контекстом и вернитесь к нему в назначенный день, чтобы записать, что получилось.
+save a decision with its context, then come back on a chosen day to record what happened.
 
-[открыть приложение](https://chebaturkin.github.io/decision-capsule/)
+[open the app](https://chebaturkin.github.io/decision-capsule/?lang=en)
 
-капсула хранит вопрос, варианты, выбранный путь, уверенность и дату пересмотра. когда дата наступит, её можно открыть вручную и добавить итог. исходное решение остаётся неизменным.
+a capsule keeps your question, options, chosen path, confidence and review date. when that date arrives, open it manually and add a result. the original decision stays unchanged.
 
-## как выглядит
+## a look inside
 
-архив с поиском и фильтрами. на скриншотах показаны демонстрационные записи.
+the archive has search, filters and sorting. these screenshots use demonstration entries.
 
-![архив решений](docs/screenshots/archive.png)
+![decision archive with sealed, ready and opened capsules](docs/screenshots/en/archive.png)
 
 <details>
-<summary>создание капсулы</summary>
+<summary>create a capsule</summary>
 
-![заполнение капсулы](docs/screenshots/create.png)
+![writing a question in a new capsule](docs/screenshots/en/create.png)
 
 </details>
 
 <details>
-<summary>решение и фактический итог</summary>
+<summary>the decision and its result</summary>
 
-![открытая капсула с итогом](docs/screenshots/detail.png)
+![an opened capsule with its original context and recorded result](docs/screenshots/en/detail.png)
 
 </details>
 
 <details>
-<summary>на телефоне</summary>
+<summary>on a phone</summary>
 
-<img src="docs/screenshots/mobile-create.png" alt="создание капсулы на телефоне" width="320">
+<img src="docs/screenshots/en/mobile-create.png" alt="creating a capsule on a phone" width="320">
 
 </details>
 
-## где хранятся данные
+## where the data stays
 
-капсулы сохраняются в indexeddb, локальном хранилище этого браузера. аккаунта, серверной базы и аналитики нет. чтобы сохранить копию или перенести записи в другой браузер, скачайте архив.
+capsules are saved in indexeddb in this browser. there is no account, server database or analytics. download the archive to keep a backup or move your entries to another browser.
 
-дата пересмотра считается по календарю и часовому поясу устройства. приложение не отправляет напоминания: открыть капсулу нужно самостоятельно.
+review dates follow your device calendar and time zone. the app does not send reminders. you need to return and open a capsule yourself.
 
-## перенос записей
+## move your entries
 
-- **скачать архив**: сохранить все капсулы в json-файл;
-- **загрузить архив**: проверить файл, показать новые и повторяющиеся капсулы, затем добавить новые после подтверждения;
-- **скачать заметку**: сохранить одну капсулу в markdown;
-- **ссылка на капсулу**: перенести одну запись через ссылку.
+- **download archive** saves every capsule in a json file.
+- **import archive** checks the file, counts new and duplicate capsules, then adds new entries after confirmation.
+- **download note** saves one capsule as markdown, with labels in the current interface language.
+- **capsule link** carries one entry in a link.
 
-данные в ссылке не зашифрованы. любой, у кого она есть, сможет прочитать капсулу.
+link data is not encrypted. anyone with the link can read the capsule.
 
-## локальный запуск
+## language
 
-```bash
+use **ru / en** in the header. a valid `?lang=ru` or `?lang=en` link takes priority, followed by your saved choice, the first supported browser language and english as the fallback. switching keeps your current step, unsaved text, archive and other url parameters. your own writing is never translated.
+
+## run locally
+
+```sh
 npm install
 npm run dev
 ```
 
-откройте `http://127.0.0.1:5173`.
+open `http://127.0.0.1:5173`. the app uses html, css and javascript without a framework. its fonts and logo make no external requests.
 
-приложение написано на html, css и javascript, без фреймворка. шрифты и логотип не требуют внешних запросов.
+## checks and build
 
-## проверка и сборка
-
-```bash
+```sh
 npm test
 npm run build
 ```
 
-сборка создаёт статические файлы в `dist` для github pages. пользовательские данные при этом не читаются.
+the build writes static files to `dist` for github pages. it does not read user data.
 
-при запущенном локальном сервере можно пройти сценарии в браузере. для этой проверки нужны python и playwright с установленным chromium:
+with a local server running, python, playwright and chromium installed:
 
-```bash
+```sh
 python3 tests/ui_smoke.py
+I18N_URL=http://127.0.0.1:5173 python3 tests/i18n_browser.py
 ```
 
-проверка создаёт записи в отдельном временном браузере: создание, сохранение черновика, открытие, итог, поиск, фильтры, импорт и экспорт. также проверяет фокус в диалогах и ширину страниц на телефоне. ваши данные она не использует.
+the checks use an isolated temporary browser. they cover creation, draft recovery, opening, results, search, filters, sorting, import, export, dialog focus, language switching and mobile widths. they do not use your saved data.
 
-чтобы обновить демонстрационные скриншоты:
+to refresh the russian demonstration screenshots:
 
-```bash
+```sh
 python3 tests/ui_smoke.py --screenshots
 ```
