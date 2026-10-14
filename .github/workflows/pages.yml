@@ -1,4 +1,4 @@
-name: deploy Decision Capsule
+name: deploy decision capsule
 on:
   push:
     branches: [main]
