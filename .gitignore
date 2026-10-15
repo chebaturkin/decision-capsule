@@ -3,3 +3,11 @@ dist/
 .DS_Store
 playwright-report/
 test-results/
+
+# Local author and agent notes
+AGENTS.md
+AGENT_PROMPT.md
+docs/superpowers/
+.codex/
+.superpowers/
+.worktrees/

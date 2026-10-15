@@ -35,9 +35,18 @@ the archive has search, filters and sorting. these screenshots use demonstration
 
 </details>
 
+## make your first capsule
+
+1. write the question and the context you want to remember.
+2. add at least two options, record your choice and set your confidence.
+3. choose a review date, check the summary and seal the capsule.
+4. return on or after that date, open the capsule and add what happened.
+
+you can leave an unfinished capsule and resume its draft later. after sealing, the original question, context and choice stay fixed so you can compare them with the result.
+
 ## where the data stays
 
-capsules are saved in indexeddb in this browser. there is no account, server database or analytics. download the archive to keep a backup or move your entries to another browser.
+capsules are saved in indexeddb in this browser. there is no account, server database or analytics. clearing browser data can remove the archive. download a json backup before changing browsers or clearing storage.
 
 review dates follow your device calendar and time zone. the app does not send reminders. you need to return and open a capsule yourself.
 
@@ -48,7 +57,7 @@ review dates follow your device calendar and time zone. the app does not send re
 - **download note** saves one capsule as markdown, with labels in the current interface language.
 - **capsule link** carries one entry in a link.
 
-link data is not encrypted. anyone with the link can read the capsule.
+link data is not encrypted. anyone with the link can read the capsule. sealing preserves the original entry inside the app; it is not a password or a way to hide a file from someone using your device.
 
 ## language
 
@@ -57,11 +66,11 @@ use **ru / en** in the header. a valid `?lang=ru` or `?lang=en` link takes prior
 ## run locally
 
 ```sh
-npm install
+npm ci
 npm run dev
 ```
 
-open `http://127.0.0.1:5173`. the app uses html, css and javascript without a framework. its fonts and logo make no external requests.
+open the local app in [english](http://127.0.0.1:5173/?lang=en) or [russian](http://127.0.0.1:5173/?lang=ru). the app uses html, css and javascript without a framework. its fonts and logo make no external requests.
 
 ## checks and build
 
